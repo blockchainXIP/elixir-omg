@@ -37,6 +37,7 @@ defmodule OMG.Watcher.Web.Controller.Utxo do
   end
 
   def get_utxo_exit(conn, %{"utxo_pos" => utxo_pos}) do
+    IO.inspect(utxo_pos)
     {utxo_pos, ""} = Integer.parse(utxo_pos)
 
     utxo_pos
@@ -122,22 +123,22 @@ defmodule OMG.Watcher.Web.Controller.Utxo do
   end
 
   swagger_path :get_utxos do
-    get("/utxos")
+    post("/utxo.get")
     summary("Gets all utxos belonging to the given address")
 
     parameters do
-      address(:query, :string, "Address of utxo owner", required: true)
+      address(:body, :string, "Address of utxo owner", required: true)
     end
 
     response(200, "OK", Schema.ref(:Utxos))
   end
 
   swagger_path :get_utxo_exit do
-    get("/utxo/{utxo_pos}/exit_data")
+    post("/utxo.get_exit_data")
     summary("Responds with exit for a given utxo")
 
     parameters do
-      utxo_pos(:path, :integer, "Position of the exiting utxo", required: true)
+      utxo_pos(:body, :integer, "Position of the exiting utxo", required: true)
     end
 
     response(200, "OK", Schema.ref(:UtxoExit))
